@@ -1,0 +1,282 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+new file mode 100644
+--- /dev/null	(date 1671030921792)
++++ b/main.py	(date 1671030921792)
+@@ -0,0 +1,147 @@
++import random
++import time
++from time import sleep
++import pygame
++import sys
++from pygame import *
++
++pygame.init()
++display_weight = 1080
++display_height = 720
++kW = 0.7
++kH = 0.40
++KATE_WEIGHT = display_weight * kW
++KATE_HEIGHT = display_height * kH
++
++KATE_X = (display_weight - KATE_WEIGHT) / 2
++KATE_Y = 75
++
++BALL_DIAMETR = 30
++BALL_X_START = (display_weight - 30) / 2
++BALL_Y_START = display_height / 1.15
++BALL_CENTER_X_START = BALL_X_START + (BALL_DIAMETR / 2)
++BALL_CENTER_Y_START = BALL_Y_START + (BALL_DIAMETR / 2)
++
++kMiniKate = 4.2
++xDisplay0 = 0
++yDisplay0 = 0
++
++xKate0 = KATE_X
++yKate0 = KATE_Y + KATE_HEIGHT
++
++xMiniKate0 = (display_weight - (KATE_WEIGHT / kMiniKate)) / 2
++
++a1 = xMiniKate0 - xKate0  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
++a2 = BALL_X_START - xMiniKate0
++b1 = BALL_Y_START - yKate0
++
++b2 = (a2 * b1) / a1
++
++yMiniKate0 = BALL_CENTER_Y_START - b2
++
++display = pygame.display.set_mode([display_weight, display_height])
++
++
++class Player:
++
++    def __init__(self, start_x, statr_y, speed, image, weight=77, height=245):
++        self.image = image
++        self.height = height
++        self.weight = weight
++        self.speed = speed
++        self.x = start_x
++        self.y = statr_y
++
++    def go(self, vector):
++
++        if vector == "UP" and (self.y - self.speed > 0):
++            self.y -= self.speed
++
++        if vector == "LEFT" and self.x > 0:
++            self.x -= self.speed
++
++        if vector == "RIGHT" and self.x + self.weight < display_weight:
++            self.x += self.speed
++
++        if vector == "DOWN":
++            self.y += self.speed
++
++
++ball = Surface((BALL_DIAMETR, BALL_DIAMETR))
++ball.fill(Color("black"))
++
++blue_kords = Surface((5, 5))
++blue_kords.fill(Color("blue"))
++
++bg = Surface((display_weight, display_height))
++bg.fill((0, 100, 0))
++
++kate = Surface((KATE_WEIGHT, KATE_HEIGHT))
++kate.fill((0, 0, 0))
++
++
++def predictor(X_start, Y_start):
++    XtoMini = X_start - xMiniKate0
++    YtoMini = yMiniKate0 - Y_start
++
++    XtoKate = XtoMini * kMiniKate
++    YtoKate = YtoMini * kMiniKate
++
++    X_finite = XtoKate + xKate0
++    Y_finite = yKate0 - YtoKate
++    return X_finite, Y_finite
++
++
++def run_game():
++    game = True
++
++    while game:
++
++        # display.blit(background, (0, 0))
++        # display.blit(leha.image, (leha.x, leha.y))
++
++
++        # _________________________________________
++        # key = pygame.key.get_pressed()
++        # # if key[pygame.K_w]:
++        # #     leha.go("UP")
++        # if key[pygame.K_a] and leha.x >= 260:
++        #     leha.go("LEFT")
++        #
++        # if key[pygame.K_d] and leha.x <= 760:
++        #     leha.go("RIGHT")
++
++        # if key[pygame.K_s]:
++        #     leha.go("DOWN")
++
++        display.blit(bg, (0, 0))
++        display.blit(kate, (KATE_X, KATE_Y))
++        display.blit(ball, ((display_weight - 30) / 2, display_height / 1.15))
++
++        test_ball_x_1 = random.randint(int(xMiniKate0), int(xMiniKate0 + (KATE_WEIGHT / kMiniKate)))
++        test_ball_y_1 = random.randint(int(yMiniKate0 - (KATE_HEIGHT / kMiniKate)), int(yMiniKate0))
++        ball.fill((255, 255, 255))
++
++        display.blit(ball, (test_ball_x_1, test_ball_y_1))
++
++        ball.fill((255, 0, 0))
++
++        display.blit(ball, predictor(test_ball_x_1, test_ball_y_1))
++
++        sleep(2)
++
++        display.blit(blue_kords, (xMiniKate0, yMiniKate0))
++
++        # -------------------------------
++
++        for event in pygame.event.get():
++            if event.type == pygame.QUIT:
++                pygame.quit()
++                sys.exit()
++
++        pygame.display.update()
++        pygame.time.Clock().tick(60)
++
++
++# leha = Player(300, 240, 10, person)
++run_game()
+Index: .idea/inspectionProfiles/Project_Default.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+new file mode 100644
+--- /dev/null	(date 1671028985334)
++++ b/.idea/inspectionProfiles/Project_Default.xml	(date 1671028985334)
+@@ -0,0 +1,12 @@
++<component name="InspectionProjectProfileManager">
++  <profile version="1.0">
++    <option name="myName" value="Project Default" />
++    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
++      <option name="ignoredErrors">
++        <list>
++          <option value="N806" />
++        </list>
++      </option>
++    </inspection_tool>
++  </profile>
++</component>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1671030761245)
++++ b/.idea/vcs.xml	(date 1671030761245)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/pythonPenaltyProject.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/pythonPenaltyProject.iml b/.idea/pythonPenaltyProject.iml
+new file mode 100644
+--- /dev/null	(date 1671028985970)
++++ b/.idea/pythonPenaltyProject.iml	(date 1671028985970)
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="PYTHON_MODULE" version="4">
++  <component name="NewModuleRootManager">
++    <content url="file://$MODULE_DIR$">
++      <excludeFolder url="file://$MODULE_DIR$/venv" />
++    </content>
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1671028986020)
++++ b/.idea/modules.xml	(date 1671028986020)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/pythonPenaltyProject.iml" filepath="$PROJECT_DIR$/.idea/pythonPenaltyProject.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1671028986069)
++++ b/.idea/misc.xml	(date 1671028986069)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (pythonPenaltyProject)" project-jdk-type="Python SDK" />
++</project>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/profiles_settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/profiles_settings.xml b/.idea/inspectionProfiles/profiles_settings.xml
+new file mode 100644
+--- /dev/null	(date 1671028986181)
++++ b/.idea/inspectionProfiles/profiles_settings.xml	(date 1671028986181)
+@@ -0,0 +1,6 @@
++<component name="InspectionProjectProfileManager">
++  <settings>
++    <option name="USE_PROJECT_PROFILE" value="false" />
++    <version value="1.0" />
++  </settings>
++</component>
+\ No newline at end of file
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1671028988569)
++++ b/.idea/.gitignore	(date 1671028988569)
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml
